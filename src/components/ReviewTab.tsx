@@ -20,7 +20,7 @@ export function ReviewTab({ exercises, progress, onGrade, onOpenGrammar }: Props
   if (queue.length === 0) {
     return (
       <div className="centered">
-        ✅ All caught up.
+        All caught up.
         <br />
         <small>Nothing is due for review. Complete a lesson to add cards here.</small>
       </div>
@@ -30,7 +30,7 @@ export function ReviewTab({ exercises, progress, onGrade, onOpenGrammar }: Props
   if (index >= queue.length) {
     return (
       <div className="centered">
-        🎉 Review done — {correct}/{queue.length} correct.
+        Review complete — {correct}/{queue.length} correct.
         <br />
         <small>Come back later as more cards fall due.</small>
       </div>

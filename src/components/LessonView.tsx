@@ -3,6 +3,7 @@ import type { CheckResult, Exercise, GrammarNote, Lesson } from '../types';
 import { loadGrammarNote } from '../lib/bank';
 import { MarkdownNote } from './MarkdownNote';
 import { PracticeQuestion } from './PracticeQuestion';
+import { ThemeToggle } from './ThemeToggle';
 
 interface Props {
   lesson: Lesson;
@@ -53,7 +54,10 @@ export function LessonView({ lesson, exercises, onGrade, onClose, onOpenGrammar 
         <button type="button" className="link" onClick={onClose}>
           ← Lessons
         </button>
-        <span className="stat">{lesson.title}</span>
+        <div className="topbar-right">
+          <span className="stat">{lesson.title}</span>
+          <ThemeToggle />
+        </div>
       </header>
       <main>
         {step === 'intro' && (
@@ -99,7 +103,7 @@ export function LessonView({ lesson, exercises, onGrade, onClose, onOpenGrammar 
 
         {step === 'done' && (
           <section className="card centered-card">
-            <h2>Lesson complete 🎉</h2>
+            <h2>Lesson complete</h2>
             <p className="big-score">
               {correct} / {answered} correct
             </p>

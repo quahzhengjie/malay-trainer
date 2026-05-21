@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { GrammarNote } from '../types';
 import { loadGrammarNote } from '../lib/bank';
 import { MarkdownNote } from './MarkdownNote';
+import { ThemeToggle } from './ThemeToggle';
 
 interface Props {
   id: string;
@@ -32,6 +33,7 @@ export function GrammarView({ id, onClose }: Props) {
           <button type="button" className="link" onClick={onClose}>
             ← Close
           </button>
+          <ThemeToggle />
         </header>
         <main>
           <article className="card grammar">

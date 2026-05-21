@@ -11,6 +11,7 @@ import { GrammarList } from './components/GrammarList';
 import { GrammarView } from './components/GrammarView';
 import { TabBar } from './components/TabBar';
 import type { Tab } from './components/TabBar';
+import { ThemeToggle } from './components/ThemeToggle';
 
 function findLesson(course: Course, id: string): Lesson | undefined {
   for (const chapter of course.chapters) {
@@ -52,7 +53,7 @@ export default function App() {
   if (error) {
     return (
       <div className="centered">
-        ⚠️ {error}
+        {error}
         <br />
         <small>
           Run <code>npm run build:bank</code>, then reload.
@@ -80,7 +81,11 @@ export default function App() {
       ) : (
         <>
           <header className="topbar">
-            <span className="brand">🇲🇾 Malay Trainer</span>
+            <span className="brand">
+              <span className="brand-mark">BM</span>
+              Malay Trainer
+            </span>
+            <ThemeToggle />
           </header>
           <main>
             {tab === 'learn' && (

@@ -29,7 +29,12 @@ export function PracticeQuestion({ exercise, onResult, onNext, onOpenGrammar }: 
 
   return (
     <>
-      <QuestionCard exercise={exercise} locked={result !== null} onAnswer={answer} />
+      <QuestionCard
+        exercise={exercise}
+        locked={result !== null}
+        result={result}
+        onAnswer={answer}
+      />
       {result && (
         <Feedback
           result={result}

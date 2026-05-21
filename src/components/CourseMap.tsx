@@ -10,21 +10,46 @@ interface Props {
 }
 
 export function CourseMap({ course, byId, progress, onOpenLesson }: Props) {
+  const allLessons = course.chapters.flatMap((c) => c.lessons);
+  const doneCount = allLessons.filter(
+    (l) => lessonStats(l, byId, progress).done,
+  ).length;
+  const pct = allLessons.length ? Math.round((100 * doneCount) / allLessons.length) : 0;
+
   return (
     <div className="course">
+      <div className="progress-banner">
+        <h1>Your progress</h1>
+        <p className="sub">
+          {doneCount} of {allLessons.length} lessons complete
+        </p>
+        <div className="bar">
+          <div className="bar-fill" style={{ width: `${pct}%` }} />
+        </div>
+      </div>
+
       {course.chapters.map((chapter) => (
         <section key={chapter.id} className="chapter">
-          <h2 className="chapter-title">{chapter.title}</h2>
+          <div className="chapter-head">
+            <h2 className="chapter-title">{chapter.title}</h2>
+            {chapter.lessons[0]?.level && (
+              <span className="chapter-level">{chapter.lessons[0].level}</span>
+            )}
+          </div>
           <div className="lesson-list">
             {chapter.lessons.map((lesson) => {
               const s = lessonStats(lesson, byId, progress);
-              const pct = s.total ? (100 * s.practiced) / s.total : 0;
-              const state = s.done ? 'Completed' : s.practiced > 0 ? 'In progress' : 'Not started';
+              const lessonPct = s.total ? (100 * s.practiced) / s.total : 0;
+              const state = s.done
+                ? 'Completed'
+                : s.practiced > 0
+                  ? 'In progress'
+                  : 'Not started';
               return (
                 <button
                   key={lesson.id}
                   type="button"
-                  className="lesson-card"
+                  className={`lesson-card${s.done ? ' lesson-done' : ''}`}
                   onClick={() => onOpenLesson(lesson.id)}
                 >
                   <div className="lesson-card-top">
@@ -34,7 +59,7 @@ export function CourseMap({ course, byId, progress, onOpenLesson }: Props) {
                     </span>
                   </div>
                   <div className="bar">
-                    <div className="bar-fill" style={{ width: `${pct}%` }} />
+                    <div className="bar-fill" style={{ width: `${lessonPct}%` }} />
                   </div>
                   <span className="lesson-sub">
                     {state}

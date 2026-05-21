@@ -1,16 +1,27 @@
 import { useState } from 'react';
-import type { Exercise } from '../types';
+import type { CheckResult, Exercise } from '../types';
 
 interface Props {
   exercise: Exercise;
   /** True once the question has been answered — inputs lock until the user moves on. */
   locked: boolean;
+  /** The grading result, once answered — used to colour the options. */
+  result: CheckResult | null;
   onAnswer: (answer: string | number) => void;
 }
 
-export function QuestionCard({ exercise, locked, onAnswer }: Props) {
+export function QuestionCard({ exercise, locked, result, onAnswer }: Props) {
   const [text, setText] = useState('');
+  const [selected, setSelected] = useState<number | null>(null);
   const isMcq = exercise.type === 'mcq';
+
+  // After answering: green the correct option, red the wrong pick, dim the rest.
+  function optionClass(index: number, correct: boolean): string {
+    if (!result) return 'option';
+    if (correct) return 'option option-correct';
+    if (index === selected) return 'option option-wrong';
+    return 'option option-dim';
+  }
 
   return (
     <section className="card">
@@ -26,11 +37,18 @@ export function QuestionCard({ exercise, locked, onAnswer }: Props) {
             <button
               key={i}
               type="button"
-              className="option"
+              className={optionClass(i, opt.correct)}
               disabled={locked}
-              onClick={() => onAnswer(i)}
+              onClick={() => {
+                setSelected(i);
+                onAnswer(i);
+              }}
             >
-              {opt.text}
+              <span>{opt.text}</span>
+              {result && opt.correct && <span className="option-mark">✓</span>}
+              {result && i === selected && !opt.correct && (
+                <span className="option-mark">✗</span>
+              )}
             </button>
           ))}
         </div>
@@ -47,8 +65,11 @@ export function QuestionCard({ exercise, locked, onAnswer }: Props) {
             value={text}
             disabled={locked}
             placeholder="Type your answer in Malay…"
-            onChange={(e) => setText(e.target.value)}
             aria-label="Your answer"
+            className={
+              result ? (result.correct ? 'input-correct' : 'input-wrong') : undefined
+            }
+            onChange={(e) => setText(e.target.value)}
           />
           <button type="submit" disabled={locked || !text.trim()}>
             Check
