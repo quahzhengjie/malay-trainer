@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import type { GrammarNote } from '../types';
 import { loadGrammarNote } from '../lib/bank';
 
@@ -40,7 +41,9 @@ export function GrammarView({ id, onClose }: Props) {
               <div className="meta">
                 {note.level && <span className="pill">{note.level}</span>}
               </div>
-              <Markdown>{`# ${note.title}\n\n${note.body}`}</Markdown>
+              <Markdown remarkPlugins={[remarkGfm]}>
+                {`# ${note.title}\n\n${note.body}`}
+              </Markdown>
             </>
           )}
         </article>
