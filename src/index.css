@@ -57,11 +57,15 @@ body {
 .stat {
   color: var(--muted);
   font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 main {
   flex: 1;
   padding: 18px;
+  padding-bottom: 84px; /* clears the fixed tab bar */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -73,11 +77,16 @@ main {
   color: var(--muted);
 }
 
+/* ---- cards & questions ---- */
 .card {
   background: var(--surface);
   border: 1px solid var(--surface-2);
   border-radius: var(--radius);
   padding: 22px;
+}
+
+.centered-card {
+  text-align: center;
 }
 
 .meta {
@@ -141,6 +150,7 @@ main {
 
 .text-answer input {
   flex: 1;
+  min-width: 0;
   padding: 13px 14px;
   border-radius: 10px;
   border: 1px solid var(--surface-2);
@@ -154,7 +164,6 @@ button.primary,
 .text-answer button {
   background: var(--brand);
   color: #042f2e;
-  font-weight: 700;
   border: none;
   border-radius: 10px;
   padding: 13px 20px;
@@ -164,11 +173,18 @@ button.primary,
   font-weight: 700;
 }
 
+button.primary.block {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+}
+
 button:disabled {
   opacity: 0.5;
   cursor: default;
 }
 
+/* ---- feedback ---- */
 .feedback {
   border-radius: var(--radius);
   padding: 18px 20px;
@@ -238,6 +254,187 @@ button.link {
   font: inherit;
   font-size: 0.92rem;
   padding: 6px 0;
+}
+
+/* ---- course map ---- */
+.course {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chapter-title {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.lesson-card {
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--surface-2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  color: var(--text);
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.12s;
+}
+
+.lesson-card:hover {
+  border-color: var(--brand);
+}
+
+.lesson-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.lesson-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.lesson-badge {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--brand);
+  background: var(--surface-2);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+.lesson-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.bar {
+  height: 6px;
+  background: var(--surface-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--brand);
+  transition: width 0.3s ease;
+}
+
+/* ---- lesson view ---- */
+.lesson-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.lesson-grammar {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--surface-2);
+  border-radius: 10px;
+}
+
+.big-score {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--brand);
+  margin: 12px 0;
+}
+
+.review-count {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* ---- tab bar ---- */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  background: var(--surface);
+  border-top: 1px solid var(--surface-2);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 5;
+}
+
+.tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 4px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  position: relative;
+}
+
+.tab-active {
+  color: var(--brand);
+}
+
+.tab-icon {
+  font-size: 1.2rem;
+}
+
+.tab-dot {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(8px);
+  background: var(--bad);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* ---- grammar overlay ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.overlay-inner {
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .grammar {

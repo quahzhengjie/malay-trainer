@@ -1,5 +1,5 @@
-// Shared data model. The shape an Exercise takes here is exactly what
-// scripts/build-bank.mjs emits from the CSV question bank.
+// Shared data model. Exercise/Course/GrammarNote here match exactly what
+// scripts/build-bank.mjs emits into public/data/.
 
 export type Level = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 export type Skill =
@@ -22,6 +22,8 @@ export interface Exercise {
   id: string;
   level: Level;
   skill: Skill;
+  /** id of the Lesson this question belongs to. */
+  lesson: string;
   type: QType;
   prompt: string;
   /** Present for `mcq`. */
@@ -44,9 +46,26 @@ export interface CheckResult {
   closeMiss?: CloseMiss;
 }
 
-export interface BankIndex {
-  levels: { level: string; file: string; count: number }[];
-  total: number;
+/** A unit of study: a teaching intro plus a fixed set of questions. */
+export interface Lesson {
+  id: string;
+  title: string;
+  level: string;
+  intro: string;
+  /** id of the grammar note shown as the lesson's teaching card. */
+  grammarNote?: string;
+  /** Exercise ids belonging to this lesson, in order. */
+  exerciseIds: string[];
+}
+
+export interface Chapter {
+  id: string;
+  title: string;
+  lessons: Lesson[];
+}
+
+export interface Course {
+  chapters: Chapter[];
 }
 
 export interface GrammarNote {
@@ -55,4 +74,8 @@ export interface GrammarNote {
   level: string;
   tags: string[];
   body: string;
+}
+
+export interface GrammarIndex {
+  notes: { id: string; title: string; level: string }[];
 }

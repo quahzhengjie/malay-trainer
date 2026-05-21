@@ -1,29 +1,27 @@
-import type { BankIndex, Exercise, GrammarNote } from '../types';
+import type { Course, Exercise, GrammarIndex, GrammarNote } from '../types';
 
-// All content is fetched as static JSON built by scripts/build-bank.mjs.
+// All content is fetched as static JSON built by scripts/build-bank.mjs into public/data/.
 // BASE_URL keeps paths correct under the GitHub Pages sub-path.
-const BASE = import.meta.env.BASE_URL;
+const BASE = `${import.meta.env.BASE_URL}data/`;
 
-export async function loadBankIndex(): Promise<BankIndex> {
-  const res = await fetch(`${BASE}bank/index.json`);
-  if (!res.ok) throw new Error('Could not load the question bank index.');
-  return res.json();
+async function getJson<T>(path: string, what: string): Promise<T> {
+  const res = await fetch(`${BASE}${path}`);
+  if (!res.ok) throw new Error(`Could not load ${what}. Run "npm run build:bank".`);
+  return res.json() as Promise<T>;
 }
 
-export async function loadLevel(file: string): Promise<Exercise[]> {
-  const res = await fetch(`${BASE}bank/${file}`);
-  if (!res.ok) throw new Error(`Could not load ${file}.`);
-  return res.json();
+export function loadCourse(): Promise<Course> {
+  return getJson<Course>('course.json', 'the course');
 }
 
-export async function loadAllExercises(): Promise<Exercise[]> {
-  const index = await loadBankIndex();
-  const groups = await Promise.all(index.levels.map((l) => loadLevel(l.file)));
-  return groups.flat();
+export function loadExercises(): Promise<Exercise[]> {
+  return getJson<Exercise[]>('exercises.json', 'the question bank');
 }
 
-export async function loadGrammarNote(id: string): Promise<GrammarNote> {
-  const res = await fetch(`${BASE}grammar/${id}.json`);
-  if (!res.ok) throw new Error(`Could not load grammar note "${id}".`);
-  return res.json();
+export function loadGrammarIndex(): Promise<GrammarIndex> {
+  return getJson<GrammarIndex>('grammar/index.json', 'the grammar index');
+}
+
+export function loadGrammarNote(id: string): Promise<GrammarNote> {
+  return getJson<GrammarNote>(`grammar/${id}.json`, `grammar note "${id}"`);
 }

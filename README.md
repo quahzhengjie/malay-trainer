@@ -4,66 +4,73 @@ A static, offline-capable web app for learning **Bahasa Melayu**, from absolute 
 (CEFR A1) to advanced (C2). No backend, no runtime AI — every question *and its feedback*
 lives in a data file, so the whole app is a free static site.
 
-## How it works
+## Structure
+
+The app has three tabs:
+
+- **📚 Learn** — the course map: chapters → lessons. Each lesson teaches first
+  (a grammar / intro card) then runs ~3–8 questions, ending in a completion screen.
+- **🔁 Review** — spaced repetition. Only questions you've already learned resurface here,
+  scheduled by a Leitner algorithm.
+- **📖 Grammar** — browse every grammar note directly.
+
+## How content works
 
 | Layer | Where | Edited by |
 |---|---|---|
-| Question bank | `content/bank/*.csv` (one CSV per level) | you, in Excel / Google Sheets |
-| Course content | `content/grammar/*.md` (Markdown + frontmatter) | you, in any editor |
-| Build step | `scripts/build-bank.mjs` | — compiles both to JSON in `public/` |
+| Question bank | `content/bank/*.csv` (one CSV per level) | you, in Excel / Sheets |
+| Course outline | `content/lessons.csv` (chapters & lessons) | you, in Excel / Sheets |
+| Grammar notes | `content/grammar/*.md` (Markdown + frontmatter) | you, in any editor |
+| Build step | `scripts/build-bank.mjs` | compiles all of the above to `public/data/` |
 | Answer grading | `src/lib/checkAnswer.ts` | the single checker every question routes through |
-| Scheduling | `src/lib/srs.ts` | Leitner spaced-repetition; progress saved in the browser |
 
-`public/bank/` and `public/grammar/` are **generated** — CSV and Markdown are the source of truth.
+Everything in `public/data/` is **generated** — the CSVs and Markdown are the source of truth.
 
 ## Develop
 
 ```bash
 npm install
-npm run dev      # builds the bank, then starts Vite
+npm run dev      # builds content, then starts Vite
 ```
 
-## Add questions
+## Add a question
 
-Open `content/bank/a1.csv` (etc.). Columns:
+Open `content/bank/a1.csv` (etc.). Key columns:
 
-- `id, level, skill, type, prompt`
+- `id, level, skill, lesson, type, prompt` — `lesson` must match a `lesson_id` in `lessons.csv`.
 - **Multiple choice** (`type` = `mcq`): fill `opt_a..opt_d`, set one `opt_*_correct` to `true`,
   and write each `opt_*_why` — the feedback shown when that choice is picked.
 - **Typed answer** (`type` = `text`, `fill_blank`, `word_order`): leave the options blank and
   fill `accepted` — pipe-separate alternatives, e.g. `ibu|emak`.
 - `explanation` — the general "why", always shown after answering.
-- `grammar_note` — id of a file in `content/grammar/` (optional).
-- `tags` — pipe-separated (optional).
+- `grammar_note`, `tags` — optional.
 
-Then run `npm run build:bank` (or just `npm run dev`).
+## Add a lesson or chapter
 
-## Add a grammar lesson
+Edit `content/lessons.csv`. One row per lesson:
 
-Create `content/grammar/<id>.md`:
-
-```markdown
----
-id: my-topic
-title: My topic
-level: A2
-tags: [grammar]
----
-Lesson body in Markdown...
+```
+chapter,lesson_id,lesson_title,level,grammar_note,intro
+First Words,greetings,Greetings & polite words,A1,greetings,"A short intro line."
 ```
 
-Link a question to it via the `grammar_note` column.
+Rows sharing a `chapter` value are grouped into that chapter, in file order.
+`grammar_note` (optional) is the id of a file in `content/grammar/`, shown as the
+lesson's teaching card. A question joins a lesson via its `lesson` column.
 
-## Test
+## Add a grammar note
+
+Create `content/grammar/<id>.md` with frontmatter (`id, title, level, tags`), then
+reference its `id` from a lesson or a question. Tables and other GitHub-flavored
+Markdown are supported.
+
+## Test & deploy
 
 ```bash
 npm test         # vitest — covers the answer checker
 ```
 
-## Deploy
-
 Pushing to `main` runs `.github/workflows/deploy.yml`, which builds and publishes to
-GitHub Pages. One-time setup: in the repo, **Settings → Pages → Source: GitHub Actions**.
-
-The app lives at `https://<user>.github.io/malay-trainer/`. If you rename the repo,
-update `base` in `vite.config.ts` to match.
+GitHub Pages (`https://<user>.github.io/malay-trainer/`). One-time setup:
+**Settings → Pages → Source: GitHub Actions**. If you rename the repo, update `base`
+in `vite.config.ts`.

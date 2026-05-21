@@ -6,6 +6,7 @@ const mcq: Exercise = {
   id: 't-mcq',
   level: 'A1',
   skill: 'vocab',
+  lesson: 'test',
   type: 'mcq',
   prompt: 'Pick the morning greeting',
   options: [
@@ -20,6 +21,7 @@ const text: Exercise = {
   id: 't-text',
   level: 'A1',
   skill: 'translation',
+  lesson: 'test',
   type: 'text',
   prompt: 'Translate: I eat rice',
   accepted: ['saya makan nasi', 'aku makan nasi'],
@@ -31,6 +33,7 @@ const order: Exercise = {
   id: 't-order',
   level: 'A1',
   skill: 'grammar',
+  lesson: 'test',
   type: 'word_order',
   prompt: 'Order: makan / saya / nasi',
   accepted: ['saya makan nasi'],
