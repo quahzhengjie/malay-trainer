@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Course, Exercise, Lesson } from './types';
 import { loadCourse, loadExercises } from './lib/bank';
-import { loadProgress, saveProgress, getCard } from './lib/storage';
+import { loadProgress, saveProgress, getCard, clearProgress } from './lib/storage';
 import { review } from './lib/srs';
 import { dueExercises } from './lib/stats';
 import { CourseMap } from './components/CourseMap';
@@ -57,6 +57,12 @@ export default function App() {
     });
   }
 
+  function resetProgress() {
+    if (!window.confirm('Reset all your progress? This cannot be undone.')) return;
+    clearProgress();
+    setProgress({});
+  }
+
   if (error) {
     return (
       <div className="centered" role="alert">
@@ -99,6 +105,7 @@ export default function App() {
                 byId={byId}
                 progress={progress}
                 onOpenLesson={setLessonId}
+                onResetProgress={resetProgress}
               />
             )}
             {tab === 'review' && (

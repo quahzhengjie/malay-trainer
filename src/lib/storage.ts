@@ -24,6 +24,15 @@ export function saveProgress(progress: Progress): void {
   }
 }
 
+/** Wipe all saved progress. */
+export function clearProgress(): void {
+  try {
+    localStorage.removeItem(KEY);
+  } catch {
+    // localStorage unavailable — nothing to clear.
+  }
+}
+
 export function getCard(progress: Progress, id: string): CardState {
   return progress[id] ?? newCard();
 }

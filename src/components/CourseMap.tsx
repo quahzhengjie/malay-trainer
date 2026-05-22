@@ -7,9 +7,16 @@ interface Props {
   byId: Map<string, Exercise>;
   progress: Progress;
   onOpenLesson: (id: string) => void;
+  onResetProgress: () => void;
 }
 
-export function CourseMap({ course, byId, progress, onOpenLesson }: Props) {
+export function CourseMap({
+  course,
+  byId,
+  progress,
+  onOpenLesson,
+  onResetProgress,
+}: Props) {
   const allLessons = course.chapters.flatMap((c) => c.lessons);
   const doneCount = allLessons.filter(
     (l) => lessonStats(l, byId, progress).done,
@@ -26,6 +33,9 @@ export function CourseMap({ course, byId, progress, onOpenLesson }: Props) {
         <div className="bar">
           <div className="bar-fill" style={{ width: `${pct}%` }} />
         </div>
+        <button type="button" className="reset-btn" onClick={onResetProgress}>
+          Reset progress
+        </button>
       </div>
 
       {course.chapters.map((chapter) => (
