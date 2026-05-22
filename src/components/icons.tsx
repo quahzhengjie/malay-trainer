@@ -109,3 +109,13 @@ export function FlameIcon(props: IconProps) {
     </Icon>
   );
 }
+
+export function SpeakerIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+      <path d="M19 5a9 9 0 0 1 0 14" />
+    </Icon>
+  );
+}

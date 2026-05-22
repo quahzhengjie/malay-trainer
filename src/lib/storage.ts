@@ -33,6 +33,24 @@ export function clearProgress(): void {
   }
 }
 
+const ONBOARDED_KEY = 'malay-trainer:onboarded';
+
+export function isOnboarded(): boolean {
+  try {
+    return localStorage.getItem(ONBOARDED_KEY) === '1';
+  } catch {
+    return true; // storage unavailable — don't trap the user in onboarding
+  }
+}
+
+export function setOnboarded(): void {
+  try {
+    localStorage.setItem(ONBOARDED_KEY, '1');
+  } catch {
+    // localStorage unavailable — onboarding will show again next visit.
+  }
+}
+
 export function getCard(progress: Progress, id: string): CardState {
   return progress[id] ?? newCard();
 }

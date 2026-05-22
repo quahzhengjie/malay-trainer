@@ -18,6 +18,9 @@ interface Props {
 // 'intro' = teaching card; a number = that question index; 'done' = completion screen.
 type Step = 'intro' | 'done' | number;
 
+// Long lessons are split into rounds, with a breather screen between them.
+const ROUND_SIZE = 8;
+
 export function LessonView({
   lesson,
   exercises,
@@ -30,6 +33,7 @@ export function LessonView({
   const [note, setNote] = useState<GrammarNote | null>(null);
   const [correct, setCorrect] = useState(0);
   const [answered, setAnswered] = useState(0);
+  const [paused, setPaused] = useState(false);
   const backRef = useRef<HTMLButtonElement>(null);
 
   // Move keyboard focus into the lesson when it opens.
@@ -60,6 +64,7 @@ export function LessonView({
   function restart() {
     setCorrect(0);
     setAnswered(0);
+    setPaused(false);
     setStep('intro');
   }
 
@@ -93,7 +98,7 @@ export function LessonView({
           </section>
         )}
 
-        {typeof step === 'number' && exercises[step] && (
+        {typeof step === 'number' && exercises[step] && !paused && (
           <>
             <div className="lesson-progress">
               <span>
@@ -110,10 +115,39 @@ export function LessonView({
               key={exercises[step].id}
               exercise={exercises[step]}
               onResult={(r) => handleResult(r, exercises[step].id)}
-              onNext={() => setStep(step + 1 < exercises.length ? step + 1 : 'done')}
+              onNext={() => {
+                const ni = step + 1;
+                if (ni >= exercises.length) {
+                  setStep('done');
+                } else {
+                  setStep(ni);
+                  if (ni % ROUND_SIZE === 0) setPaused(true);
+                }
+              }}
               onOpenGrammar={onOpenGrammar}
             />
           </>
+        )}
+
+        {typeof step === 'number' && paused && (
+          <section className="card centered-card">
+            <h2>Round {step / ROUND_SIZE} done</h2>
+            <p className="big-score">
+              {step} / {exercises.length}
+            </p>
+            <p className="explain">
+              Nice pace — {exercises.length - step} to go. Take a breath, then keep
+              going.
+            </p>
+            <button
+              type="button"
+              className="primary block"
+              autoFocus
+              onClick={() => setPaused(false)}
+            >
+              Continue
+            </button>
+          </section>
         )}
 
         {step === 'done' && (

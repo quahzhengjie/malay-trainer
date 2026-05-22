@@ -876,3 +876,92 @@ button.link {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+
+/* ---- onboarding ---- */
+.onboard {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.onboard h1 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.onboard p {
+  margin: 8px 0;
+}
+
+.onboard-mark {
+  display: inline-block;
+  font-size: 0.95rem;
+  padding: 7px 11px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.onboard-list {
+  list-style: none;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 16px 0;
+}
+
+.onboard-list li {
+  padding-left: 14px;
+  border-left: 3px solid var(--brand);
+  font-size: 0.92rem;
+}
+
+.placement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.placement-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  color: var(--text);
+  font: inherit;
+  transition: border-color 0.12s ease;
+}
+
+.placement-card:hover {
+  border-color: var(--brand);
+}
+
+.placement-label {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.placement-detail {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* ---- audio ---- */
+.answer-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.speak-btn {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}

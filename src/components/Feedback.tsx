@@ -1,5 +1,6 @@
 import type { CheckResult, Exercise } from '../types';
 import { BookIcon, CheckIcon, CrossIcon } from './icons';
+import { SpeakButton } from './SpeakButton';
 
 interface Props {
   result: CheckResult;
@@ -19,6 +20,14 @@ export function Feedback({ result, exercise, onNext, onOpenGrammar }: Props) {
         <h3>{heading}</h3>
       </div>
       <p>{result.feedback}</p>
+
+      {/* Typed-answer questions: show the Malay answer with a button to hear it. */}
+      {exercise.type !== 'mcq' && exercise.accepted && exercise.accepted[0] && (
+        <p className="answer-line">
+          <span lang="ms">{exercise.accepted[0]}</span>
+          <SpeakButton text={exercise.accepted[0]} />
+        </p>
+      )}
 
       {/* On a wrong MCQ, show every option's rationale — feedback authored into the bank. */}
       {!result.correct && exercise.type === 'mcq' && (

@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { Course, Exercise, Lesson } from './types';
+import type { Course, Exercise, Lesson, Level } from './types';
 import { loadCourse, loadExercises } from './lib/bank';
-import { loadProgress, saveProgress, getCard, clearProgress } from './lib/storage';
+import {
+  loadProgress,
+  saveProgress,
+  getCard,
+  clearProgress,
+  isOnboarded,
+  setOnboarded,
+} from './lib/storage';
 import { loadStats, saveStats, clearStats, recordAnswer, setDailyGoal } from './lib/userStats';
 import { review } from './lib/srs';
 import { dueExercises } from './lib/stats';
@@ -14,6 +21,9 @@ import { GrammarView } from './components/GrammarView';
 import { TabBar } from './components/TabBar';
 import type { Tab } from './components/TabBar';
 import { ThemeToggle } from './components/ThemeToggle';
+import { Onboarding } from './components/Onboarding';
+
+const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 const GOAL_OPTIONS = [10, 20, 30, 40];
 
@@ -41,6 +51,7 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('home');
   const [lessonId, setLessonId] = useState<string | null>(null);
   const [grammarId, setGrammarId] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(() => !isOnboarded());
 
   useEffect(() => {
     Promise.all([loadCourse(), loadExercises()])
@@ -88,6 +99,26 @@ export default function App() {
     clearStats();
     setProgress({});
     setStats(loadStats());
+  }
+
+  // Finish onboarding: optionally mark lessons below the chosen level as known.
+  function completeOnboarding(start: Level | null) {
+    if (start) {
+      const limit = LEVEL_ORDER.indexOf(start);
+      const due = Date.now() + 7 * 86_400_000;
+      setProgress((prev) => {
+        const next = { ...prev };
+        for (const ex of exercises) {
+          if (LEVEL_ORDER.indexOf(ex.level) < limit) {
+            next[ex.id] = { box: 3, due, seen: 1, correct: 1 };
+          }
+        }
+        saveProgress(next);
+        return next;
+      });
+    }
+    setOnboarded();
+    setShowOnboarding(false);
   }
 
   if (error) {
@@ -166,6 +197,7 @@ export default function App() {
       )}
 
       {grammarId && <GrammarView id={grammarId} onClose={() => setGrammarId(null)} />}
+      {showOnboarding && <Onboarding onComplete={completeOnboarding} />}
     </div>
   );
 }
