@@ -3,7 +3,10 @@
 // This is what lets one question bank serve a beginner and an advanced learner equally well:
 // mastered items quietly drop out of rotation, weak ones keep coming back.
 
-const INTERVALS_DAYS = [0, 1, 3, 7, 16, 35];
+// Days until a card is next due, indexed by box. Box 0 (new / just-lapsed) is
+// 1 day, never 0 — so a card you just answered leaves the "due" pool, and a
+// review session you finish today correctly clears the count to zero.
+const INTERVALS_DAYS = [1, 1, 3, 7, 16, 35];
 export const MAX_BOX = INTERVALS_DAYS.length - 1;
 const DAY_MS = 86_400_000;
 
