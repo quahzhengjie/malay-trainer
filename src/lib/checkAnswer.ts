@@ -60,11 +60,13 @@ export function checkAnswer(ex: Exercise, answer: string | number): CheckResult 
     return { correct: true, feedback: ex.explanation };
   }
 
-  // Near-miss: a small number of typos away from a correct answer.
-  const typoTolerance = ex.type === 'word_order' ? 0 : 2;
-  if (typoTolerance > 0) {
+  // Near-miss: a few typos away from a correct answer. Tolerance scales with
+  // length, so short words (ada/apa, ya/saya) are not mistaken for typos.
+  if (ex.type !== 'word_order') {
     for (let i = 0; i < accepted.length; i++) {
-      if (editDistance(guess, accepted[i]) <= typoTolerance) {
+      const target = accepted[i];
+      const tolerance = target.length <= 4 ? 0 : target.length <= 8 ? 1 : 2;
+      if (tolerance > 0 && editDistance(guess, target) <= tolerance) {
         return {
           correct: false,
           closeMiss: 'spelling',

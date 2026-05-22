@@ -37,10 +37,17 @@ export default function App() {
         setCourse(c);
         setExercises(ex);
       })
-      .catch((e) => setError(String(e.message ?? e)));
+      .catch((e) => {
+        console.error(e);
+        setError(String(e.message ?? e));
+      });
   }, []);
 
   const byId = useMemo(() => new Map(exercises.map((ex) => [ex.id, ex])), [exercises]);
+  const reviewDue = useMemo(
+    () => dueExercises(exercises, progress).length,
+    [exercises, progress],
+  );
 
   function grade(exerciseId: string, correct: boolean) {
     setProgress((prev) => {
@@ -52,19 +59,17 @@ export default function App() {
 
   if (error) {
     return (
-      <div className="centered">
-        {error}
-        <br />
-        <small>
-          Run <code>npm run build:bank</code>, then reload.
-        </small>
+      <div className="centered" role="alert">
+        <p>Sorry — the app could not load its content.</p>
+        <button type="button" className="primary" onClick={() => location.reload()}>
+          Reload
+        </button>
       </div>
     );
   }
-  if (!course) return <div className="centered">Loading…</div>;
+  if (!course) return <div className="centered" role="status">Loading…</div>;
 
   const activeLesson = lessonId ? findLesson(course, lessonId) : undefined;
-  const reviewDue = dueExercises(exercises, progress).length;
 
   return (
     <div className="app">

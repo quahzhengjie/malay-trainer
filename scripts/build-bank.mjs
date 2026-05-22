@@ -18,6 +18,10 @@ const splitList = (v) => (v || '').split('|').map((s) => s.trim()).filter(Boolea
 const isTrue = (v) => ['true', '1', 'yes', 'x'].includes(String(v).trim().toLowerCase());
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+const LEVELS = new Set(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']);
+const SKILLS = new Set(['vocab', 'grammar', 'listening', 'reading', 'translation', 'affix']);
+const TYPES = new Set(['mcq', 'text', 'fill_blank', 'word_order', 'match']);
+
 function fail(msg) {
   console.error(`\n  build-bank: ${msg}\n`);
   process.exit(1);
@@ -44,6 +48,9 @@ function rowToExercise(row, file, lineNo) {
     tags: splitList(row.tags),
   };
   if (!ex.lesson) fail(`${file} line ${lineNo} (${id}): missing lesson`);
+  if (!LEVELS.has(ex.level)) fail(`${file} line ${lineNo} (${id}): invalid level "${ex.level}"`);
+  if (!SKILLS.has(ex.skill)) fail(`${file} line ${lineNo} (${id}): invalid skill "${ex.skill}"`);
+  if (!TYPES.has(ex.type)) fail(`${file} line ${lineNo} (${id}): invalid type "${ex.type}"`);
   const note = (row.grammar_note || '').trim();
   if (note) ex.grammarNote = note;
 

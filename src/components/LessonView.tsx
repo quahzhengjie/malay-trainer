@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { CheckResult, Exercise, GrammarNote, Lesson } from '../types';
 import { loadGrammarNote } from '../lib/bank';
 import { MarkdownNote } from './MarkdownNote';
@@ -21,6 +21,12 @@ export function LessonView({ lesson, exercises, onGrade, onClose, onOpenGrammar 
   const [note, setNote] = useState<GrammarNote | null>(null);
   const [correct, setCorrect] = useState(0);
   const [answered, setAnswered] = useState(0);
+  const backRef = useRef<HTMLButtonElement>(null);
+
+  // Move keyboard focus into the lesson when it opens.
+  useEffect(() => {
+    backRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     if (!lesson.grammarNote) {
@@ -51,7 +57,7 @@ export function LessonView({ lesson, exercises, onGrade, onClose, onOpenGrammar 
   return (
     <>
       <header className="topbar">
-        <button type="button" className="link" onClick={onClose}>
+        <button type="button" className="link" onClick={onClose} ref={backRef}>
           ← Lessons
         </button>
         <div className="topbar-right">
@@ -87,7 +93,7 @@ export function LessonView({ lesson, exercises, onGrade, onClose, onOpenGrammar 
               <div className="bar">
                 <div
                   className="bar-fill"
-                  style={{ width: `${(step / exercises.length) * 100}%` }}
+                  style={{ width: `${((step + 1) / exercises.length) * 100}%` }}
                 />
               </div>
             </div>

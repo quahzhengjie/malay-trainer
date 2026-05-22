@@ -66,6 +66,11 @@ export function QuestionCard({ exercise, locked, result, onAnswer }: Props) {
             disabled={locked}
             placeholder="Type your answer in Malay…"
             aria-label="Your answer"
+            lang="ms"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="done"
             className={
               result ? (result.correct ? 'input-correct' : 'input-wrong') : undefined
             }

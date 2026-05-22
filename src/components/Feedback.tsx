@@ -13,7 +13,7 @@ export function Feedback({ result, exercise, onNext, onOpenGrammar }: Props) {
   const heading = result.correct ? 'Betul!' : result.closeMiss ? 'So close' : 'Belum betul';
 
   return (
-    <section className={`feedback feedback-${tone}`}>
+    <section className={`feedback feedback-${tone}`} role="status" aria-live="polite">
       <div className="feedback-head">
         {result.correct ? <CheckIcon size={20} /> : <CrossIcon size={20} />}
         <h3>{heading}</h3>
@@ -47,7 +47,7 @@ export function Feedback({ result, exercise, onNext, onOpenGrammar }: Props) {
         ) : (
           <span />
         )}
-        <button type="button" className="primary" autoFocus onClick={onNext}>
+        <button type="button" className="primary" onClick={onNext}>
           Next →
         </button>
       </div>
