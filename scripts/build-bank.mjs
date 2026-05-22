@@ -158,6 +158,11 @@ for (const file of mdFiles) {
   writeFileSync(join(GRAMMAR_OUT, `${id}.json`), JSON.stringify(note));
   notes.push({ id, title: note.title, level: note.level });
 }
+// Order the grammar index by level, then title — so the Grammar tab reads sensibly.
+const levelRank = (lvl) => ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(lvl);
+notes.sort(
+  (a, b) => levelRank(a.level) - levelRank(b.level) || a.title.localeCompare(b.title),
+);
 writeFileSync(join(GRAMMAR_OUT, 'index.json'), JSON.stringify({ notes }, null, 2));
 
 const lessonCount = chapters.reduce((n, c) => n + c.lessons.length, 0);

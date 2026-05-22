@@ -10,16 +10,22 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon.svg'],
+      includeAssets: ['icon.svg', 'icon-maskable.svg'],
       manifest: {
         name: 'Malay Trainer',
         short_name: 'Malay',
         description: 'Learn Bahasa Melayu — beginner to advanced',
-        theme_color: '#0f766e',
+        theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
         icons: [
-          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' },
+          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+          {
+            src: 'icon-maskable.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'maskable',
+          },
         ],
       },
     }),

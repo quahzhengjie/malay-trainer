@@ -6,13 +6,15 @@ lives in a data file, so the whole app is a free static site.
 
 ## Structure
 
-The app has three tabs:
+The app has four tabs:
 
-- **📚 Learn** — the course map: chapters → lessons. Each lesson teaches first
-  (a grammar / intro card) then runs ~3–8 questions, ending in a completion screen.
-- **🔁 Review** — spaced repetition. Only questions you've already learned resurface here,
+- **Home** — at-a-glance overview: streak, daily goal, what's due for review, a
+  "continue learning" shortcut, course progress and a grammar cheat-sheet.
+- **Learn** — the course map: chapters → lessons. Each lesson teaches first
+  (a grammar / intro card) then runs ~12–25 questions, ending in a completion screen.
+- **Review** — spaced repetition. Only questions you've already learned resurface here,
   scheduled by a Leitner algorithm.
-- **📖 Grammar** — browse every grammar note directly.
+- **Grammar** — browse every grammar note directly.
 
 ## How content works
 
@@ -67,7 +69,7 @@ Markdown are supported.
 ## Test & deploy
 
 ```bash
-npm test         # vitest — covers the answer checker
+npm test         # vitest — covers the answer checker and the SRS scheduler
 ```
 
 Pushing to `main` runs `.github/workflows/deploy.yml`, which builds and publishes to
