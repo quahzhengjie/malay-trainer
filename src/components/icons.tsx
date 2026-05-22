@@ -93,3 +93,19 @@ export function BookIcon(props: IconProps) {
     </Icon>
   );
 }
+
+export function HomeIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" />
+    </Icon>
+  );
+}
+
+export function FlameIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 2C9 5 8 8 8 12a4 4 0 0 0 8 0c0-2-1-3.5-2-4.5 0 2-1 3-2 3 1-4 0-7 0-8.5z" />
+    </Icon>
+  );
+}

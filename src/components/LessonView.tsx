@@ -11,12 +11,21 @@ interface Props {
   onGrade: (exerciseId: string, correct: boolean) => void;
   onClose: () => void;
   onOpenGrammar: (id: string) => void;
+  /** Opens the next lesson — absent on the final lesson of the course. */
+  onNextLesson?: () => void;
 }
 
 // 'intro' = teaching card; a number = that question index; 'done' = completion screen.
 type Step = 'intro' | 'done' | number;
 
-export function LessonView({ lesson, exercises, onGrade, onClose, onOpenGrammar }: Props) {
+export function LessonView({
+  lesson,
+  exercises,
+  onGrade,
+  onClose,
+  onOpenGrammar,
+  onNextLesson,
+}: Props) {
   const [step, setStep] = useState<Step>('intro');
   const [note, setNote] = useState<GrammarNote | null>(null);
   const [correct, setCorrect] = useState(0);
@@ -114,16 +123,23 @@ export function LessonView({ lesson, exercises, onGrade, onClose, onOpenGrammar 
               {correct} / {answered} correct
             </p>
             <p className="explain">
-              These questions are now in your Review pool — spaced repetition will bring
-              them back at the right time to lock them in.
+              +{correct * 10 + (answered - correct) * 2} XP earned. These questions are
+              now in your Review pool — spaced repetition will bring them back to lock
+              them in.
             </p>
             <div className="feedback-actions">
               <button type="button" className="link" onClick={restart}>
                 Practice again
               </button>
-              <button type="button" className="primary" onClick={onClose}>
-                Back to lessons →
-              </button>
+              {onNextLesson ? (
+                <button type="button" className="primary" onClick={onNextLesson}>
+                  Next lesson →
+                </button>
+              ) : (
+                <button type="button" className="primary" onClick={onClose}>
+                  Back to lessons →
+                </button>
+              )}
             </div>
           </section>
         )}

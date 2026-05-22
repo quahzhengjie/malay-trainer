@@ -741,3 +741,138 @@ button.link {
     transform: none;
   }
 }
+
+/* ---- home / overview ---- */
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.home-greet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.home-greet h1 {
+  font-size: 1.3rem;
+}
+
+.streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--near);
+  background: var(--near-bg);
+  border: 1px solid var(--near);
+  border-radius: 999px;
+  padding: 4px 11px;
+}
+
+.home .chapter-title {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.home-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.home-section-head .chapter-title {
+  margin-bottom: 0;
+}
+
+.goal-btn {
+  flex-shrink: 0;
+  background: var(--surface-2);
+  border: none;
+  border-radius: 999px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 11px;
+  cursor: pointer;
+}
+
+.home .sub {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 2px 0 10px;
+}
+
+.cheat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cheat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 13px;
+  cursor: pointer;
+  color: var(--text);
+  font: inherit;
+  box-shadow: var(--shadow);
+  transition: border-color 0.12s ease;
+}
+
+.cheat-card:hover {
+  border-color: var(--brand);
+}
+
+.cheat-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.cheat-line {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 4px;
+  box-shadow: var(--shadow);
+}
+
+.stat-num {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--brand);
+}
+
+.stat-label {
+  font-size: 0.66rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

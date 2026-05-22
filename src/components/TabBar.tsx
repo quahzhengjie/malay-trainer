@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
-import { GrammarIcon, LearnIcon, ReviewIcon } from './icons';
+import { GrammarIcon, HomeIcon, LearnIcon, ReviewIcon } from './icons';
 
-export type Tab = 'learn' | 'review' | 'grammar';
+export type Tab = 'home' | 'learn' | 'review' | 'grammar';
 
 interface Props {
   tab: Tab;
@@ -11,6 +11,7 @@ interface Props {
 }
 
 const TABS: { id: Tab; label: string; Icon: ComponentType<{ size?: number }> }[] = [
+  { id: 'home', label: 'Home', Icon: HomeIcon },
   { id: 'learn', label: 'Learn', Icon: LearnIcon },
   { id: 'review', label: 'Review', Icon: ReviewIcon },
   { id: 'grammar', label: 'Grammar', Icon: GrammarIcon },

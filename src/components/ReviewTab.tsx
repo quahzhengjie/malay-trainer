@@ -28,11 +28,12 @@ export function ReviewTab({ exercises, progress, onGrade, onOpenGrammar }: Props
   }
 
   if (index >= queue.length) {
+    const xp = correct * 10 + (queue.length - correct) * 2;
     return (
       <div className="centered">
         Review complete — {correct}/{queue.length} correct.
         <br />
-        <small>Come back later as more cards fall due.</small>
+        <small>+{xp} XP earned. Come back later as more cards fall due.</small>
       </div>
     );
   }
