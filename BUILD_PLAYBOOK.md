@@ -80,22 +80,36 @@ the component structure. Fork the repo, swap the content.
 - **The writing system.** Malay has none beyond Latin. For many languages this is the
   single biggest piece of new work.
 
-## Note for the Japanese build
+## Planned: the Japanese app
 
-Japanese is a substantially bigger content and UX problem than Malay:
+Decisions made (2026-05-22) — to be built in a later session:
 
-- **Three scripts** — hiragana, katakana, kanji. The standard learning path is kana
-  first, then kanji + vocabulary + grammar.
-- **Answer input is the key design decision.** Accept romaji? kana? both? A Japanese
-  answer-checker must handle romaji↔kana equivalence (e.g. `sushi` = `すし`), multiple
-  kanji readings, and optional-kanji-vs-kana answers.
-- **Extras** — furigana (reading hints over kanji), politeness levels
-  (plain / -masu / keigo), particles, counters, pitch accent.
-- **Levels** — JLPT (N5→N1) instead of CEFR.
+- **Separate app.** A new repo, `japanese-trainer`, forking Malay Trainer's structure
+  (`src/`, `scripts/`, `content/`, deploy workflow). Malay Trainer stays untouched.
+  If a third language is ever added, extract a shared core *then* — not before.
+- **Input model: accept both romaji and kana.** The learner may type Latin letters
+  (`sushi`) or kana (`すし`); both are accepted for the same answer.
+- **Levels: JLPT N5 → N1** (instead of CEFR).
 
-Decide the script/input model **first** — it dictates the answer-checker, which is the
-one piece that does not transfer. Everything else (architecture, SRS, lessons, Home,
-deploy) copies straight over from Malay Trainer.
+The one piece that does **not** transfer — and the main build work — is the
+**answer-checker**:
+
+- Canonical comparison form = **hiragana**. `normalize()` converts the learner's
+  input to hiragana first: katakana → hiragana is a simple code-point shift;
+  romaji → hiragana is a fixed syllable lookup table (handle long vowels, small tsu,
+  ん).
+- Author `accepted` answers in **kana**. For kanji questions, accept the kanji *and*
+  its kana reading (pipe-separated) so kanji / kana / romaji all match.
+- The rest of `checkAnswer` (multiple-choice, near-miss, etc.) carries over.
+
+Curriculum progression: **hiragana → katakana → kanji + vocabulary + grammar**.
+Plan for later: furigana, politeness levels (plain / -masu / keigo), particles,
+counters, pitch accent.
+
+Everything else — architecture, build pipeline, spaced repetition, course/lesson
+model, Home / streak / XP, theme, PWA, deploy — copies straight over from Malay
+Trainer. When ready, follow "The build sequence" above; the first real task is the
+romaji↔kana answer-checker.
 
 ## Checklist to start the next app
 
